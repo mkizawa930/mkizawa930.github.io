@@ -1,1 +1,1 @@
-# mkizawa930 のページ
+# mkizawa930.github.io
