@@ -1,0 +1,35 @@
+---
+layout: default
+title: ブログ
+---
+<section class="pt-32 pb-20 px-6">
+  <div class="max-w-screen-md mx-auto">
+    <h1 class="text-3xl font-bold text-center mb-12">ブログ</h1>
+    {% if site.posts.size > 0 %}
+    <div class="space-y-6">
+      {% for post in site.posts %}
+      <a href="{{ post.url | prepend: site.baseurl }}" class="group block bg-gray-100 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700/50 hover:border-sky-400/30 transition-colors">
+        <time class="text-xs text-gray-500" datetime="{{ post.date | date_to_xmlschema }}">
+          {{ post.date | date: "%Y年%m月%d日" }}
+        </time>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-1 group-hover:text-sky-400 transition-colors">
+          {{ post.title }}
+        </h2>
+        {% if post.tags.size > 0 %}
+        <div class="flex flex-wrap gap-1.5 mt-2">
+          {% for tag in post.tags %}
+          <span class="px-2 py-0.5 text-xs rounded-full bg-sky-400/10 text-sky-400 border border-sky-400/20">{{ tag }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% if post.excerpt %}
+        <p class="text-sm text-gray-600 dark:text-gray-400 mt-2 line-clamp-2">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-gray-500 text-center">まだ記事がありません。</p>
+    {% endif %}
+  </div>
+</section>

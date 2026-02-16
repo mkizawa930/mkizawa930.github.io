@@ -1,0 +1,16 @@
+title: MKのページ
+description: "Software Engineer"
+url: "https://mkizawa930.github.io"
+baseurl: ""
+
+permalink: /blog/:year/:month/:day/:title/
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
