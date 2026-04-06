@@ -2,6 +2,7 @@
 title: Pythonのloggingについて
 date: 2026-01-10
 description: "Pythonのloggingモジュールの基本的な使い方、ロガーの親子関係、セットアップ方法について解説します"
+tags: [python, logging]
 ---
 
 ## 基本的な使用方法

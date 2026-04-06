@@ -3,7 +3,8 @@ title: "JupytextとQuartoで実験管理"
 date: "2026-03-08"
 description: ""
 categories: ["jupytext", "quarto", "python"]
-publised: false
+tags: [jupytext, quarto, python]
+published: false
 ---
 
 ## Jupytext
