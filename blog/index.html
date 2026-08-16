@@ -8,11 +8,14 @@ title: ブログ
     {% if site.posts.size > 0 %}
     <div class="space-y-6">
       {% for post in site.posts %}
-      <a href="{{ post.url | prepend: site.baseurl }}" class="group block bg-gray-100 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700/50 hover:border-sky-400/30 transition-colors">
+      <a href="{{ post.url | prepend: site.baseurl }}" class="group relative block bg-gray-100 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700/50 hover:border-sky-400/30 transition-colors">
+        {% if post.published == false %}
+        <span class="absolute top-4 right-4 px-2 py-0.5 text-xs font-medium rounded-full bg-amber-400/10 text-amber-600 dark:text-amber-400 border border-amber-400/30">未公開</span>
+        {% endif %}
         <time class="text-xs text-gray-500" datetime="{{ post.date | date_to_xmlschema }}">
           {{ post.date | date: "%Y年%m月%d日" }}
         </time>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-1 group-hover:text-sky-400 transition-colors">
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-1 pr-16 group-hover:text-sky-400 transition-colors">
           {{ post.title }}
         </h2>
         {% if post.tags.size > 0 %}
