@@ -10,12 +10,12 @@ tags: [jupytext, quarto, python]
 
 ### Jupytextとは
 
-[Jupytext](https://jupytext.readthedocs.io/en/latest)はコードブロックで記載されたpythonスクリプトをJupyterNotebook形式に変換することができる。
+[Jupytext](https://jupytext.readthedocs.io/en/latest)は、Jupyter NotebookをPythonスクリプトやMarkdownなどのテキスト形式に変換し、必要に応じて相互に同期できるツールである。
 
 ### セル形式のPythonスクリプト
 
 セル形式のPythonスクリプトとは、`# %%`でセルを区切る形式のPythonスクリプトのことである。
-VSCodeはJupyterと組み合わせてインタラクティブな実行を可能とする。また、単純にスクリプトとしても実行できる。セル形式のスクリプトは次のように書くことができる。
+VS CodeはJupyterと組み合わせてインタラクティブに実行できる。また、通常のPythonスクリプトとしても実行できる。セル形式のスクリプトは次のように記述する。
 
 ```python
 # ---
@@ -29,33 +29,47 @@ VSCodeはJupyterと組み合わせてインタラクティブな実行を可能�
 
 # %%
 # This is a code cell
-class A():
-    def one():
+class A:
+    def one(self):
         ...
 ```
 
-先頭の`#---`で囲われたブロックはメタデータを表し、Notebookのタイトルや日付などの情報を記述する。ここには以下で説明する、Jupytextの設定項目などを記述することもできる。ツールによって対応するが異なるようなので注意する。
+先頭の`# ---`で囲まれたブロックはメタデータを表し、Notebookのタイトルや日付などの情報を記述する。ここには、以下で説明するJupytextの設定項目も記述できる。ツールによって対応する項目が異なるため注意する。
 
 
 
 ### インストール
 
 ```bash
-# uvでinstall
+# CLIとしてインストール
 uv tool install jupytext
+```
+
+Jupyter上でファイルを保存したときに自動同期する場合は、Jupyterを実行するPython環境にJupytextをインストールする。
+
+```bash
+python -m pip install jupytext
 ```
 
 ### 使い方
 
 ```bash
-# notebookに変換する
+# Notebookに変換する
+jupytext --to notebook hoge.py
+
+# Notebookに変換してセルを実行する
 jupytext --to notebook --execute hoge.py
 ```
 
 **設定**
 
-設定は`jupytext.toml`をプロジェクトルートに配置するか、Markdownヘッダーに専用のオプションを記述することで適用する。
+プロジェクト全体に設定を適用する場合は、プロジェクトルートに`jupytext.toml`を配置する。
 
+```toml
+formats = "ipynb,py:percent"
+```
+
+ファイルごとに設定する場合は、Pythonスクリプト先頭のYAMLヘッダーにオプションを記述する。
 
 ```python
 # ---
@@ -69,9 +83,9 @@ jupytext --to notebook --execute hoge.py
 #     text_representation:
 #       format_name: percent
 #   kernelspec:
-#     name: example
+#     name: python3
 #     language: python
-#     display_name: example
+#     display_name: Python 3
 # ---
 
 # %% [markdown]
@@ -80,8 +94,8 @@ jupytext --to notebook --execute hoge.py
 
 # %%
 # This is a code cell
-class A():
-    def one():
+class A:
+    def one(self):
         ...
 ```
 
@@ -91,9 +105,9 @@ class A():
 | --- | --- | --- |
 | `jupytext.formats` | `ipynb,py:percent` | 同期するファイル形式を指定する。ここではNotebook形式とpercent形式のPythonスクリプトをペアにする。 |
 | `jupytext.text_representation.format_name` | `percent` | テキスト形式でセルを表現する方法を指定する。`percent`では`# %%`をセルの区切りとして使用する。 |
-| `kernelspec.name` | `financial-ts` | Jupyterが内部的に使用するカーネル名を指定する。実行環境に登録済みの名前を設定する。 |
+| `kernelspec.name` | `python3` | Jupyterが内部的に使用するカーネル名を指定する。実行環境に登録済みの名前を設定する。 |
 | `kernelspec.language` | `python` | カーネルが実行するプログラミング言語を指定する。 |
-| `kernelspec.display_name` | `financial-ts` | Jupyterの画面に表示されるカーネル名を指定する。 |
+| `kernelspec.display_name` | `Python 3` | Jupyterの画面に表示されるカーネル名を指定する。 |
 
 #### Notebookとの同期
 
@@ -126,9 +140,9 @@ JupytextをJupyter環境に導入している場合は、ペアになったNoteb
 
 ### Quartoとは
 
-[Quarto](https://quarto.org)はMarkdownを拡張した`.qmd`フォーマットで記載されたファイルを実行してHTMLやWord, PDFなどに変換することができるツール。JupyerNotebook形式(`.ipynb`)にも対応しているため、Jupytextと組み合わせることで`.py`ファイルから`.ipynb`または`.qmd`に変換し、その後QuartoでHTMLなどの対応する任意の出力フォーマットとして出力することができます。
+[Quarto](https://quarto.org)は、Markdownを拡張した`.qmd`ファイルを実行し、HTMLやWord、PDFなどへ変換できるツールである。Jupyter Notebook形式（`.ipynb`）にも対応しているため、Jupytextと組み合わせることで、`.py`ファイルを`.ipynb`または`.qmd`に変換し、Quartoが対応する任意の形式で出力できる。
 
-個人的にこの組み合わせが良いと思っている点は、実行時はpythonファイルの方が取り回しが良いところです。フォーマットさえ設定しておけば、すぐにきれいな可視化出力が可能になるので実験レポートなどの作成との相性がいいと思います。また、Quartoはスライド作成にも対応している点や最近話題の組版システムである[Typst](https://typst.app)との連携等も今後試していきたいと考えています。
+個人的にこの組み合わせが良いと思っている点は、実行時はPythonファイルの方が取り回しやすいことである。フォーマットを設定しておけば、きれいな可視化結果をすぐに出力できるため、実験レポートなどの作成とも相性が良い。また、Quartoはスライド作成や、組版システムである[Typst](https://typst.app)との連携にも対応している。
 
 ### インストール
 
@@ -139,32 +153,33 @@ uv tool install quarto-cli
 ```
 
 ### 使い方
+
 ```bash
 # デフォルトはHTML出力
 quarto render report.qmd
 # --toオプションでフォーマットを直接指定する
 quarto render report.qmd --to pdf
 
-# --executeオプションを付けると実行出力が可能
-quarto render report.qmd --to html --execute
-
-# ipynbをHTMLに変換
+# 保存済みの実行結果を使ってipynbをHTMLに変換
 quarto render report.ipynb --to html
+
+# セルを再実行してからHTMLに変換
+quarto render report.ipynb --to html --execute
 ```
 
-**Quartoでpyファイルを直接変換する場合の注意点**
+**Quartoで`.py`ファイルを直接レンダリングする場合の注意点**
 
 Quartoで `.py` ファイルを直接レンダリングする場合は、ファイルの先頭を `# %% [markdown]` で始め、そのセル内にYAMLヘッダーを記述する。
 
 ```python
 # %% [markdown]
----
-title: "title"
-date: "2026-01-01"
----
+# ---
+# title: "title"
+# date: "2026-01-01"
+# ---
 ```
 
 
 ## メモ
 
-`jupytext`および`quart(quarto-cli)`のインストール方法は`uv`を使ったインストール方法を前提としています。他のインストール方法などは公式ページ等を参照してください。
+JupytextおよびQuartoには、本文で紹介した方法以外にもインストール方法がある。Jupyterとの連携を利用する場合は、JupyterとJupytextを同じPython環境にインストールする必要がある。詳細はそれぞれの公式ページを参照すること。
