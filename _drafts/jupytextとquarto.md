@@ -4,7 +4,6 @@ date: "2026-03-08"
 description: ""
 categories: ["jupytext", "quarto", "python"]
 tags: [jupytext, quarto, python]
-published: false
 ---
 
 ## Jupytext
